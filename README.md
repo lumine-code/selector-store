@@ -1,4 +1,4 @@
-# @lumine-code/scoped-property-store
+# scoped-property-store
 
 Stores and retrieves properties associated with CSS selectors.
 
