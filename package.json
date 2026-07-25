@@ -3,6 +3,14 @@
   "author": "lumine-code",
   "version": "1.0.0",
   "description": "Stores and retrieves properties associated with CSS selectors.",
+  "keywords": [
+    "css",
+    "selector",
+    "scoped",
+    "properties",
+    "scope",
+    "lumine"
+  ],
   "main": "./lib/scoped-property-store",
   "scripts": {
     "test": "jasmine"
