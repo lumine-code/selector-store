@@ -1,4 +1,4 @@
-# scoped-property-store
+# selector-store
 
 Stores and retrieves properties associated with CSS selectors.
 
@@ -11,7 +11,7 @@ Stores and retrieves properties associated with CSS selectors.
 ## Installation
 
 ```sh
-npm install @lumine-code/scoped-property-store
+npm install @lumine-code/selector-store
 ```
 
 ## Usage
@@ -28,8 +28,8 @@ elements. More could be added pretty easily.
 Usage:
 
 ```js
-const ScopedPropertyStore = require('@lumine-code/scoped-property-store')
-const store = new ScopedPropertyStore()
+const SelectorStore = require('@lumine-code/selector-store')
+const store = new SelectorStore()
 
 // First associate some properties with selectors
 const disposable = store.addProperties('some-description', {

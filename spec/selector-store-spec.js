@@ -1,12 +1,12 @@
-var ScopedPropertyStore;
+var SelectorStore;
 
-ScopedPropertyStore = require('../lib/scoped-property-store');
+SelectorStore = require('../lib/selector-store');
 
-describe("ScopedPropertyStore", function() {
+describe("SelectorStore", function() {
   var store;
   store = null;
   beforeEach(function() {
-    return store = new ScopedPropertyStore();
+    return store = new SelectorStore();
   });
   describe("::getPropertyValue(scopeChain, keyPath)", function() {
     it("returns the property with the most specific scope selector for the given scope chain", function() {

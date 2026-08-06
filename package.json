@@ -1,5 +1,5 @@
 {
-  "name": "@lumine-code/scoped-property-store",
+  "name": "@lumine-code/selector-store",
   "author": "lumine-code",
   "version": "1.0.0",
   "description": "Stores and retrieves properties associated with CSS selectors.",
@@ -11,12 +11,12 @@
     "scope",
     "lumine"
   ],
-  "main": "./lib/scoped-property-store",
+  "main": "./lib/selector-store",
   "scripts": {
     "test": "jasmine"
   },
-  "repository": "https://github.com/lumine-code/scoped-property-store",
-  "bugs": "https://github.com/lumine-code/scoped-property-store/issues",
+  "repository": "https://github.com/lumine-code/selector-store",
+  "bugs": "https://github.com/lumine-code/selector-store/issues",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
@@ -28,5 +28,6 @@
   },
   "devDependencies": {
     "jasmine": "^6.3.0"
-  }
+  },
+  "homepage": "https://github.com/lumine-code/selector-store/"
 }
