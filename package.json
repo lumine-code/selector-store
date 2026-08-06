@@ -26,7 +26,7 @@
   "dependencies": {
     "@lumine-code/event-kit": "github:lumine-code/event-kit#fcd72380dff55925c2224251bc3dc81f35665437",
     "@lumine-code/selector-kit": "github:lumine-code/selector-kit#f27c31ac00885f5fb530233ec006879a1e0dea5c",
-    "@lumine-code/underscore-plus": "github:lumine-code/underscore-plus#3187fd4c2dd47f50044efe51deb7c662ddac437c"
+    "@lumine-code/underscore-plus": "github:lumine-code/underscore-plus#3c34726900a98b55cfa4b79cf9392c47eed7a404"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
