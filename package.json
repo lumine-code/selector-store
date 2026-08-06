@@ -13,7 +13,9 @@
   ],
   "main": "./lib/selector-store",
   "scripts": {
-    "test": "jasmine"
+    "test": "jasmine",
+    "lint": "eslint . --max-warnings 0 && prettier --check .",
+    "format": "prettier --write ."
   },
   "repository": "https://github.com/lumine-code/selector-store",
   "bugs": "https://github.com/lumine-code/selector-store/issues",
@@ -27,7 +29,13 @@
     "@lumine-code/underscore-plus": "github:lumine-code/underscore-plus#3187fd4c2dd47f50044efe51deb7c662ddac437c"
   },
   "devDependencies": {
-    "jasmine": "^6.3.0"
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.8.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-n": "^18.2.2",
+    "globals": "^17.9.0",
+    "jasmine": "^6.3.0",
+    "prettier": "^3.9.6"
   },
   "homepage": "https://github.com/lumine-code/selector-store/"
 }

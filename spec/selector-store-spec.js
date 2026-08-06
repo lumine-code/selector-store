@@ -1,768 +1,780 @@
 var SelectorStore;
 
-SelectorStore = require('../lib/selector-store');
+SelectorStore = require("../lib/selector-store");
 
-describe("SelectorStore", function() {
+describe("SelectorStore", function () {
   var store;
   store = null;
-  beforeEach(function() {
-    return store = new SelectorStore();
+  beforeEach(function () {
+    return (store = new SelectorStore());
   });
-  describe("::getPropertyValue(scopeChain, keyPath)", function() {
-    it("returns the property with the most specific scope selector for the given scope chain", function() {
-      store.addProperties('test', {
-        '.c': {
+  describe("::getPropertyValue(scopeChain, keyPath)", function () {
+    it("returns the property with the most specific scope selector for the given scope chain", function () {
+      store.addProperties("test", {
+        ".c": {
           x: {
-            y: 3
-          }
+            y: 3,
+          },
         },
-        '.b .c': {
+        ".b .c": {
           x: {
-            y: 2
-          }
+            y: 2,
+          },
         },
-        '.a .b .c': {
+        ".a .b .c": {
           x: {
-            y: 1
-          }
+            y: 1,
+          },
         },
-        '.a .b .c.d': {
+        ".a .b .c.d": {
           x: {
-            y: 0
-          }
-        }
+            y: 0,
+          },
+        },
       });
-      expect(store.getPropertyValue('.a .b .c.d', 'x.y')).toBe(0);
-      expect(store.getPropertyValue('.a .b .c', 'x.y')).toBe(1);
-      expect(store.getPropertyValue('.other .b .c', 'x.y')).toBe(2);
-      return expect(store.getPropertyValue('.other .stuff .c', 'x.y')).toBe(3);
+      expect(store.getPropertyValue(".a .b .c.d", "x.y")).toBe(0);
+      expect(store.getPropertyValue(".a .b .c", "x.y")).toBe(1);
+      expect(store.getPropertyValue(".other .b .c", "x.y")).toBe(2);
+      return expect(store.getPropertyValue(".other .stuff .c", "x.y")).toBe(3);
     });
-    it("returns properties that match parent scopes if none match the exact scope", function() {
-      store.addProperties('test', {
-        '.a .b.c': {
+    it("returns properties that match parent scopes if none match the exact scope", function () {
+      store.addProperties("test", {
+        ".a .b.c": {
           x: {
-            y: 3
-          }
+            y: 3,
+          },
         },
-        '.d.e': {
+        ".d.e": {
           x: {
-            y: 2
-          }
+            y: 2,
+          },
         },
-        '.f': {
+        ".f": {
           x: {
-            y: 1
-          }
-        }
+            y: 1,
+          },
+        },
       });
-      expect(store.getPropertyValue('.a .b.c .d.e .f', 'x.y')).toBe(1);
-      expect(store.getPropertyValue('.a .b.c .d.e .g', 'x.y')).toBe(2);
-      expect(store.getPropertyValue('.a .b.c .d.x .g', 'x.y')).toBe(3);
-      return expect(store.getPropertyValue('.y', 'x.y')).toBeUndefined();
+      expect(store.getPropertyValue(".a .b.c .d.e .f", "x.y")).toBe(1);
+      expect(store.getPropertyValue(".a .b.c .d.e .g", "x.y")).toBe(2);
+      expect(store.getPropertyValue(".a .b.c .d.x .g", "x.y")).toBe(3);
+      return expect(store.getPropertyValue(".y", "x.y")).toBeUndefined();
     });
-    it("deep-merges all values for the given key path", function() {
-      store.addProperties('test1', {
-        '.a': {
+    it("deep-merges all values for the given key path", function () {
+      store.addProperties("test1", {
+        ".a": {
           t: {
             u: {
-              v: 1
-            }
-          }
-        }
+              v: 1,
+            },
+          },
+        },
       });
-      store.addProperties('test2', {
-        '.a .b': {
+      store.addProperties("test2", {
+        ".a .b": {
           t: {
             u: {
-              w: 2
-            }
-          }
-        }
+              w: 2,
+            },
+          },
+        },
       });
-      store.addProperties('test3', {
-        '.a .b .c': {
+      store.addProperties("test3", {
+        ".a .b .c": {
           t: {
-            x: 3
-          }
-        }
+            x: 3,
+          },
+        },
       });
-      expect(store.getPropertyValue('.a .b .c', 't.u')).toEqual({
+      expect(store.getPropertyValue(".a .b .c", "t.u")).toEqual({
         v: 1,
-        w: 2
+        w: 2,
       });
-      expect(store.getPropertyValue('.a .b .c', 't')).toEqual({
+      expect(store.getPropertyValue(".a .b .c", "t")).toEqual({
         u: {
           v: 1,
-          w: 2
+          w: 2,
         },
-        x: 3
+        x: 3,
       });
-      expect(store.getPropertyValue('.a .b .c', null)).toEqual({
+      expect(store.getPropertyValue(".a .b .c", null)).toEqual({
         t: {
           u: {
             v: 1,
-            w: 2
+            w: 2,
           },
-          x: 3
-        }
+          x: 3,
+        },
       });
-      store.addProperties('test4', {
-        '.a .b .c': {
+      store.addProperties("test4", {
+        ".a .b .c": {
           t: {
-            u: false
-          }
-        }
+            u: false,
+          },
+        },
       });
-      expect(store.getPropertyValue('.a .b .c', 't.u')).toBe(false);
-      expect(store.getPropertyValue('.a .b .c', 't')).toEqual({
+      expect(store.getPropertyValue(".a .b .c", "t.u")).toBe(false);
+      expect(store.getPropertyValue(".a .b .c", "t")).toEqual({
         u: false,
-        x: 3
+        x: 3,
       });
-      expect(store.getPropertyValue('.a .b .c', null)).toEqual({
+      expect(store.getPropertyValue(".a .b .c", null)).toEqual({
         t: {
           u: false,
-          x: 3
-        }
+          x: 3,
+        },
       });
-      store.removePropertiesForSource('test3');
-      expect(store.getPropertyValue('.a .b .c', 't')).toEqual({
-        u: false
+      store.removePropertiesForSource("test3");
+      expect(store.getPropertyValue(".a .b .c", "t")).toEqual({
+        u: false,
       });
-      store.addProperties('test5', {
-        '.a .b .c': {
-          t: null
-        }
+      store.addProperties("test5", {
+        ".a .b .c": {
+          t: null,
+        },
       });
-      expect(store.getPropertyValue('.a .b .c', 't.u')).toEqual(void 0);
-      expect(store.getPropertyValue('.a .b .c', 't')).toEqual(null);
-      return expect(store.getPropertyValue('.a .b .c', null)).toEqual({
-        t: null
+      expect(store.getPropertyValue(".a .b .c", "t.u")).toEqual(void 0);
+      expect(store.getPropertyValue(".a .b .c", "t")).toEqual(null);
+      return expect(store.getPropertyValue(".a .b .c", null)).toEqual({
+        t: null,
       });
     });
-    it("favors the most recently added properties in the event of a specificity tie", function() {
-      store.addProperties('test', {
-        '.a.b .c': {
-          'x': 1
-        }
+    it("favors the most recently added properties in the event of a specificity tie", function () {
+      store.addProperties("test", {
+        ".a.b .c": {
+          x: 1,
+        },
       });
-      store.addProperties('test', {
-        '.a .c.d': {
-          'x': 2
-        }
+      store.addProperties("test", {
+        ".a .c.d": {
+          x: 2,
+        },
       });
-      expect(store.getPropertyValue('.a.b .c.d', 'x')).toBe(2);
-      return expect(store.getPropertyValue('.a.b .c', 'x')).toBe(1);
+      expect(store.getPropertyValue(".a.b .c.d", "x")).toBe(2);
+      return expect(store.getPropertyValue(".a.b .c", "x")).toBe(1);
     });
-    it("escapes non-whitespace combinators in the scope chain", function() {
-      store.addProperties('test', {
-        '.c\\+\\+': {
-          a: 1
+    it("escapes non-whitespace combinators in the scope chain", function () {
+      store.addProperties("test", {
+        ".c\\+\\+": {
+          a: 1,
         },
-        '.c\\>': {
-          a: 2
+        ".c\\>": {
+          a: 2,
         },
-        '.c\\~': {
-          a: 3
+        ".c\\~": {
+          a: 3,
         },
-        '.c\\-': {
-          a: 4
+        ".c\\-": {
+          a: 4,
         },
-        '.c\\!': {
-          a: 5
+        ".c\\!": {
+          a: 5,
         },
         '.c\\"': {
-          a: 6
+          a: 6,
         },
-        '.c\\#': {
-          a: 7
+        ".c\\#": {
+          a: 7,
         },
-        '.c\\$': {
-          a: 8
+        ".c\\$": {
+          a: 8,
         },
-        '.c\\%': {
-          a: 9
+        ".c\\%": {
+          a: 9,
         },
-        '.c\\&': {
-          a: 10
+        ".c\\&": {
+          a: 10,
         },
-        '.c\\\'': {
-          a: 11
+        ".c\\'": {
+          a: 11,
         },
-        '.c\\*': {
-          a: 12
+        ".c\\*": {
+          a: 12,
         },
-        '.c\\,': {
-          a: 13
+        ".c\\,": {
+          a: 13,
         },
-        '.c\\/': {
-          a: 14
+        ".c\\/": {
+          a: 14,
         },
-        '.c\\:': {
-          a: 15
+        ".c\\:": {
+          a: 15,
         },
-        '.c\\;': {
-          a: 16
+        ".c\\;": {
+          a: 16,
         },
-        '.c\\=': {
-          a: 17
+        ".c\\=": {
+          a: 17,
         },
-        '.c\\?': {
-          a: 18
+        ".c\\?": {
+          a: 18,
         },
-        '.c\\@': {
-          a: 19
+        ".c\\@": {
+          a: 19,
         },
-        '.c\\|': {
-          a: 20
+        ".c\\|": {
+          a: 20,
         },
-        '.c\\^': {
-          a: 21
+        ".c\\^": {
+          a: 21,
         },
-        '.c\\(': {
-          a: 22
+        ".c\\(": {
+          a: 22,
         },
-        '.c\\)': {
-          a: 23
+        ".c\\)": {
+          a: 23,
         },
-        '.c\\<': {
-          a: 24
+        ".c\\<": {
+          a: 24,
         },
-        '.c\\{': {
-          a: 25
+        ".c\\{": {
+          a: 25,
         },
-        '.c\\}': {
-          a: 26
+        ".c\\}": {
+          a: 26,
         },
-        '.c\\[': {
-          a: 27
+        ".c\\[": {
+          a: 27,
         },
-        '.c\\]': {
-          a: 28
-        }
+        ".c\\]": {
+          a: 28,
+        },
       });
-      expect(store.getPropertyValue('.c++', 'a')).toBe(1);
-      expect(store.getPropertyValue('.c>', 'a')).toBe(2);
-      expect(store.getPropertyValue('.c~', 'a')).toBe(3);
-      expect(store.getPropertyValue('.c-', 'a')).toBe(4);
-      expect(store.getPropertyValue('.c!', 'a')).toBe(5);
-      expect(store.getPropertyValue('.c"', 'a')).toBe(6);
-      expect(store.getPropertyValue('.c#', 'a')).toBe(7);
-      expect(store.getPropertyValue('.c$', 'a')).toBe(8);
-      expect(store.getPropertyValue('.c%', 'a')).toBe(9);
-      expect(store.getPropertyValue('.c&', 'a')).toBe(10);
-      expect(store.getPropertyValue('.c\'', 'a')).toBe(11);
-      expect(store.getPropertyValue('.c*', 'a')).toBe(12);
-      expect(store.getPropertyValue('.c,', 'a')).toBe(13);
-      expect(store.getPropertyValue('.c/', 'a')).toBe(14);
-      expect(store.getPropertyValue('.c:', 'a')).toBe(15);
-      expect(store.getPropertyValue('.c;', 'a')).toBe(16);
-      expect(store.getPropertyValue('.c=', 'a')).toBe(17);
-      expect(store.getPropertyValue('.c?', 'a')).toBe(18);
-      expect(store.getPropertyValue('.c@', 'a')).toBe(19);
-      expect(store.getPropertyValue('.c|', 'a')).toBe(20);
-      expect(store.getPropertyValue('.c^', 'a')).toBe(21);
-      expect(store.getPropertyValue('.c(', 'a')).toBe(22);
-      expect(store.getPropertyValue('.c)', 'a')).toBe(23);
-      expect(store.getPropertyValue('.c<', 'a')).toBe(24);
-      expect(store.getPropertyValue('.c{', 'a')).toBe(25);
-      expect(store.getPropertyValue('.c}', 'a')).toBe(26);
-      expect(store.getPropertyValue('.c[', 'a')).toBe(27);
-      expect(store.getPropertyValue('.c]', 'a')).toBe(28);
-      return expect(store.getPropertyValue('()', 'a')).toBeUndefined();
+      expect(store.getPropertyValue(".c++", "a")).toBe(1);
+      expect(store.getPropertyValue(".c>", "a")).toBe(2);
+      expect(store.getPropertyValue(".c~", "a")).toBe(3);
+      expect(store.getPropertyValue(".c-", "a")).toBe(4);
+      expect(store.getPropertyValue(".c!", "a")).toBe(5);
+      expect(store.getPropertyValue('.c"', "a")).toBe(6);
+      expect(store.getPropertyValue(".c#", "a")).toBe(7);
+      expect(store.getPropertyValue(".c$", "a")).toBe(8);
+      expect(store.getPropertyValue(".c%", "a")).toBe(9);
+      expect(store.getPropertyValue(".c&", "a")).toBe(10);
+      expect(store.getPropertyValue(".c'", "a")).toBe(11);
+      expect(store.getPropertyValue(".c*", "a")).toBe(12);
+      expect(store.getPropertyValue(".c,", "a")).toBe(13);
+      expect(store.getPropertyValue(".c/", "a")).toBe(14);
+      expect(store.getPropertyValue(".c:", "a")).toBe(15);
+      expect(store.getPropertyValue(".c;", "a")).toBe(16);
+      expect(store.getPropertyValue(".c=", "a")).toBe(17);
+      expect(store.getPropertyValue(".c?", "a")).toBe(18);
+      expect(store.getPropertyValue(".c@", "a")).toBe(19);
+      expect(store.getPropertyValue(".c|", "a")).toBe(20);
+      expect(store.getPropertyValue(".c^", "a")).toBe(21);
+      expect(store.getPropertyValue(".c(", "a")).toBe(22);
+      expect(store.getPropertyValue(".c)", "a")).toBe(23);
+      expect(store.getPropertyValue(".c<", "a")).toBe(24);
+      expect(store.getPropertyValue(".c{", "a")).toBe(25);
+      expect(store.getPropertyValue(".c}", "a")).toBe(26);
+      expect(store.getPropertyValue(".c[", "a")).toBe(27);
+      expect(store.getPropertyValue(".c]", "a")).toBe(28);
+      return expect(store.getPropertyValue("()", "a")).toBeUndefined();
     });
-    describe('when priority option is used to add properties', function() {
-      return it("returns the property with the highest priority", function() {
-        store.addProperties('test1', {
-          '.a.b': {
+    describe("when priority option is used to add properties", function () {
+      return it("returns the property with the highest priority", function () {
+        store.addProperties(
+          "test1",
+          {
+            ".a.b": {
+              x: {
+                y: 1,
+              },
+            },
+          },
+          {
+            priority: 100,
+          },
+        );
+        store.addProperties("test2", {
+          ".a.b": {
             x: {
-              y: 1
-            }
-          }
-        }, {
-          priority: 100
+              y: 2,
+            },
+          },
         });
-        store.addProperties('test2', {
-          '.a.b': {
+        store.addProperties("test3", {
+          ".a.b": {
             x: {
-              y: 2
-            }
-          }
+              y: 3,
+            },
+          },
         });
-        store.addProperties('test3', {
-          '.a.b': {
-            x: {
-              y: 3
-            }
-          }
-        });
-        return expect(store.getPropertyValue('.a.b', 'x.y')).toBe(1);
-      });
-    });
-    describe("when the 'sources' option is provided", function() {
-      return it("returns property values from the specified source", function() {
-        store.addProperties('test1', {
-          '.a.b': {
-            x: {
-              y: 1
-            }
-          }
-        });
-        store.addProperties('test2', {
-          '.a.b': {
-            x: {
-              y: 2
-            }
-          }
-        });
-        store.addProperties('test3', {
-          '.a.b': {
-            x: {
-              y: 3
-            }
-          }
-        });
-        expect(store.getPropertyValue('.a.b', 'x.y', {
-          sources: ['test1']
-        })).toBe(1);
-        return expect(store.getPropertyValue('.a.b', 'x.y')).toBe(3); // shouldn't cache the previous call
+        return expect(store.getPropertyValue(".a.b", "x.y")).toBe(1);
       });
     });
-    return describe("when the 'excludeSources' options is used", function() {
-      return it("returns properties set on sources excluding the source secified", function() {
-        store.addProperties('test1', {
-          '.a.b': {
+    describe("when the 'sources' option is provided", function () {
+      return it("returns property values from the specified source", function () {
+        store.addProperties("test1", {
+          ".a.b": {
             x: {
-              y: 1
-            }
-          }
+              y: 1,
+            },
+          },
         });
-        store.addProperties('test2', {
-          '.a.b': {
+        store.addProperties("test2", {
+          ".a.b": {
             x: {
-              y: 2
-            }
-          }
+              y: 2,
+            },
+          },
         });
-        store.addProperties('test3', {
-          '.a.b': {
+        store.addProperties("test3", {
+          ".a.b": {
             x: {
-              y: 3
-            }
-          }
+              y: 3,
+            },
+          },
         });
-        expect(store.getPropertyValue('.a.b', 'x.y', {
-          excludeSources: ['test3']
-        })).toBe(2);
-        return expect(store.getPropertyValue('.a.b', 'x.y')).toBe(3); // shouldn't cache the previous call
+        expect(
+          store.getPropertyValue(".a.b", "x.y", {
+            sources: ["test1"],
+          }),
+        ).toBe(1);
+        return expect(store.getPropertyValue(".a.b", "x.y")).toBe(3); // shouldn't cache the previous call
+      });
+    });
+    return describe("when the 'excludeSources' options is used", function () {
+      return it("returns properties set on sources excluding the source secified", function () {
+        store.addProperties("test1", {
+          ".a.b": {
+            x: {
+              y: 1,
+            },
+          },
+        });
+        store.addProperties("test2", {
+          ".a.b": {
+            x: {
+              y: 2,
+            },
+          },
+        });
+        store.addProperties("test3", {
+          ".a.b": {
+            x: {
+              y: 3,
+            },
+          },
+        });
+        expect(
+          store.getPropertyValue(".a.b", "x.y", {
+            excludeSources: ["test3"],
+          }),
+        ).toBe(2);
+        return expect(store.getPropertyValue(".a.b", "x.y")).toBe(3); // shouldn't cache the previous call
       });
     });
   });
-  describe("::getAll(scopeChain, keyPath, {sources, excludeSources})", function() {
-    it("returns all of the values for the key-path, together with their scope selector", function() {
-      store.addProperties('test', {
-        '.c.d.e': {
+  describe("::getAll(scopeChain, keyPath, {sources, excludeSources})", function () {
+    it("returns all of the values for the key-path, together with their scope selector", function () {
+      store.addProperties("test", {
+        ".c.d.e": {
           x: {
-            y: 100
-          }
+            y: 100,
+          },
         },
-        '.c': {
+        ".c": {
           x: {
-            y: 3
-          }
+            y: 3,
+          },
         },
-        '.b .c': {
+        ".b .c": {
           x: {
-            y: 2
-          }
+            y: 2,
+          },
         },
-        '.a .b .c': {
+        ".a .b .c": {
           x: {
-            y: 1
-          }
+            y: 1,
+          },
         },
-        '.a .b .c.d': {
+        ".a .b .c.d": {
           x: {
-            y: 0
-          }
+            y: 0,
+          },
         },
-        '.a': {
+        ".a": {
           x: {
-            y: 5
-          }
+            y: 5,
+          },
         },
-        '.b': {
+        ".b": {
           x: {
-            y: 4
-          }
-        }
+            y: 4,
+          },
+        },
       });
       return expect(store.getAll(".a .b .c.d", "x.y")).toEqual([
         {
           scopeSelector: ".a .b .c.d",
-          value: 0
+          value: 0,
         },
         {
           scopeSelector: ".a .b .c",
-          value: 1
+          value: 1,
         },
         {
           scopeSelector: ".b .c",
-          value: 2
+          value: 2,
         },
         {
           scopeSelector: ".c",
-          value: 3
+          value: 3,
         },
         {
           scopeSelector: ".b",
-          value: 4
+          value: 4,
         },
         {
           scopeSelector: ".a",
-          value: 5
-        }
+          value: 5,
+        },
       ]);
     });
-    return it("respects the 'sources' and 'excludeSources' options", function() {
-      store.addProperties('test1', {
-        '.c.d.e': {
+    return it("respects the 'sources' and 'excludeSources' options", function () {
+      store.addProperties("test1", {
+        ".c.d.e": {
           x: {
-            y: 100
-          }
+            y: 100,
+          },
         },
-        '.c': {
+        ".c": {
           x: {
-            y: 3
-          }
+            y: 3,
+          },
         },
-        '.b .c': {
+        ".b .c": {
           x: {
-            y: 2
-          }
-        }
+            y: 2,
+          },
+        },
       });
-      store.addProperties('test2', {
-        '.a .b .c': {
+      store.addProperties("test2", {
+        ".a .b .c": {
           x: {
-            y: 1
-          }
+            y: 1,
+          },
         },
-        '.a .b .c.d': {
+        ".a .b .c.d": {
           x: {
-            y: 0
-          }
+            y: 0,
+          },
         },
-        '.a': {
+        ".a": {
           x: {
-            y: 5
-          }
+            y: 5,
+          },
         },
-        '.b': {
+        ".b": {
           x: {
-            y: 4
-          }
-        }
+            y: 4,
+          },
+        },
       });
-      expect(store.getAll(".a .b .c.d", "x.y", {
-        sources: ["test1"]
-      })).toEqual([
+      expect(
+        store.getAll(".a .b .c.d", "x.y", {
+          sources: ["test1"],
+        }),
+      ).toEqual([
         {
           scopeSelector: ".b .c",
-          value: 2
+          value: 2,
         },
         {
           scopeSelector: ".c",
-          value: 3
-        }
+          value: 3,
+        },
       ]);
-      return expect(store.getAll(".a .b .c.d", "x.y", {
-        excludeSources: ["test2"]
-      })).toEqual([
+      return expect(
+        store.getAll(".a .b .c.d", "x.y", {
+          excludeSources: ["test2"],
+        }),
+      ).toEqual([
         {
           scopeSelector: ".b .c",
-          value: 2
+          value: 2,
         },
         {
           scopeSelector: ".c",
-          value: 3
-        }
+          value: 3,
+        },
       ]);
     });
   });
-  describe("removing properties", function() {
-    describe("when ::removePropertiesForSource(source, selector) is used", function() {
-      return it("removes properties previously added with ::addProperties", function() {
-        store.addProperties('test1', {
-          '.a.b': {
-            'x': 1
-          }
+  describe("removing properties", function () {
+    describe("when ::removePropertiesForSource(source, selector) is used", function () {
+      return it("removes properties previously added with ::addProperties", function () {
+        store.addProperties("test1", {
+          ".a.b": {
+            x: 1,
+          },
         });
-        store.addProperties('test2', {
-          '.a': {
-            'x': 2
-          }
+        store.addProperties("test2", {
+          ".a": {
+            x: 2,
+          },
         });
-        expect(store.getPropertyValue('.a.b', 'x')).toBe(1);
-        store.removePropertiesForSource('test1');
-        return expect(store.getPropertyValue('.a.b', 'x')).toBe(2);
+        expect(store.getPropertyValue(".a.b", "x")).toBe(1);
+        store.removePropertiesForSource("test1");
+        return expect(store.getPropertyValue(".a.b", "x")).toBe(2);
       });
     });
-    describe("when ::removePropertiesForSourceAndSelector(source, selector) is used", function() {
-      return it("removes properties previously added with ::addProperties", function() {
-        store.addProperties('default', {
-          '.a.b': {
-            'x': 1
-          }
+    describe("when ::removePropertiesForSourceAndSelector(source, selector) is used", function () {
+      return it("removes properties previously added with ::addProperties", function () {
+        store.addProperties("default", {
+          ".a.b": {
+            x: 1,
+          },
         });
-        store.addProperties('default', {
-          '.a.b': {
-            'x': 2
-          }
+        store.addProperties("default", {
+          ".a.b": {
+            x: 2,
+          },
         });
-        store.addProperties('override', {
-          '.a': {
-            'x': 3
-          }
+        store.addProperties("override", {
+          ".a": {
+            x: 3,
+          },
         });
-        store.addProperties('override', {
-          '.a.b': {
-            'x': 4
-          }
+        store.addProperties("override", {
+          ".a.b": {
+            x: 4,
+          },
         });
-        expect(store.getPropertyValue('.a', 'x')).toBe(3);
-        expect(store.getPropertyValue('.a.b', 'x')).toBe(4);
-        store.removePropertiesForSourceAndSelector('override', '.b.a');
-        expect(store.getPropertyValue('.a', 'x')).toBe(3);
-        return expect(store.getPropertyValue('.a.b', 'x')).toBe(2);
+        expect(store.getPropertyValue(".a", "x")).toBe(3);
+        expect(store.getPropertyValue(".a.b", "x")).toBe(4);
+        store.removePropertiesForSourceAndSelector("override", ".b.a");
+        expect(store.getPropertyValue(".a", "x")).toBe(3);
+        return expect(store.getPropertyValue(".a.b", "x")).toBe(2);
       });
     });
-    return describe("when Disposable::dispose() is used", function() {
-      return it("removes properties previously added with ::addProperties", function() {
+    return describe("when Disposable::dispose() is used", function () {
+      return it("removes properties previously added with ::addProperties", function () {
         var disposable1, disposable2;
-        disposable1 = store.addProperties('test1', {
-          '.a.b': {
-            'x': 1
-          }
+        disposable1 = store.addProperties("test1", {
+          ".a.b": {
+            x: 1,
+          },
         });
-        disposable2 = store.addProperties('test2', {
-          '.a': {
-            'x': 2
-          }
+        disposable2 = store.addProperties("test2", {
+          ".a": {
+            x: 2,
+          },
         });
-        expect(store.getPropertyValue('.a.b', 'x')).toBe(1);
+        expect(store.getPropertyValue(".a.b", "x")).toBe(1);
         disposable1.dispose();
-        expect(store.getPropertyValue('.a.b', 'x')).toBe(2);
+        expect(store.getPropertyValue(".a.b", "x")).toBe(2);
         disposable2.dispose();
-        return expect(store.getPropertyValue('.a.b', 'x')).toBeUndefined();
+        return expect(store.getPropertyValue(".a.b", "x")).toBeUndefined();
       });
     });
   });
-  describe("::propertiesForSource(source)", function() {
-    it('returns all the properties for a given source', function() {
+  describe("::propertiesForSource(source)", function () {
+    it("returns all the properties for a given source", function () {
       var properties;
-      store.addProperties('a', {
-        '.a.b': {
-          'x': 1
-        }
+      store.addProperties("a", {
+        ".a.b": {
+          x: 1,
+        },
       });
-      store.addProperties('b', {
-        '.a': {
-          'x': 2
-        }
+      store.addProperties("b", {
+        ".a": {
+          x: 2,
+        },
       });
-      store.addProperties('b', {
-        '.a.b': {
-          'y': 1
-        }
+      store.addProperties("b", {
+        ".a.b": {
+          y: 1,
+        },
       });
-      properties = store.propertiesForSource('b');
+      properties = store.propertiesForSource("b");
       return expect(properties).toEqual({
-        '.a': {
-          x: 2
+        ".a": {
+          x: 2,
         },
-        '.a.b': {
-          y: 1
-        }
+        ".a.b": {
+          y: 1,
+        },
       });
     });
-    it('can compose properties when they have nested properties', function() {
-      store.addProperties('b', {
-        '.a.b': {
+    it("can compose properties when they have nested properties", function () {
+      store.addProperties("b", {
+        ".a.b": {
           foo: {
-            bar: 'ruby'
-          }
-        }
+            bar: "ruby",
+          },
+        },
       });
-      store.addProperties('b', {
-        '.a.b': {
+      store.addProperties("b", {
+        ".a.b": {
           foo: {
-            omg: 'wow'
-          }
-        }
+            omg: "wow",
+          },
+        },
       });
-      return expect(store.propertiesForSource('b')).toEqual({
-        '.a.b': {
+      return expect(store.propertiesForSource("b")).toEqual({
+        ".a.b": {
           foo: {
-            bar: 'ruby',
-            omg: 'wow'
-          }
-        }
+            bar: "ruby",
+            omg: "wow",
+          },
+        },
       });
     });
-    it('can compose properties added at different times for matching keys', function() {
-      store.addProperties('b', {
-        '.a': {
-          'x': 2
-        }
-      });
-      store.addProperties('b', {
-        '.a.b': {
-          'y': 1
-        }
-      });
-      store.addProperties('b', {
-        '.a.b': {
-          'z': 3,
-          'y': 5
-        }
-      });
-      store.addProperties('b', {
-        '.o.k': {
-          'y': 10
-        }
-      });
-      return expect(store.propertiesForSource('b')).toEqual({
-        '.a': {
-          x: 2
+    it("can compose properties added at different times for matching keys", function () {
+      store.addProperties("b", {
+        ".a": {
+          x: 2,
         },
-        '.a.b': {
+      });
+      store.addProperties("b", {
+        ".a.b": {
+          y: 1,
+        },
+      });
+      store.addProperties("b", {
+        ".a.b": {
+          z: 3,
           y: 5,
-          z: 3
         },
-        '.k.o': {
-          y: 10
-        }
+      });
+      store.addProperties("b", {
+        ".o.k": {
+          y: 10,
+        },
+      });
+      return expect(store.propertiesForSource("b")).toEqual({
+        ".a": {
+          x: 2,
+        },
+        ".a.b": {
+          y: 5,
+          z: 3,
+        },
+        ".k.o": {
+          y: 10,
+        },
       });
     });
-    return it('will break out composite selectors', function() {
-      store.addProperties('b', {
-        '.a, .a.b, .a.b.c': {
-          'x': 2
-        }
+    return it("will break out composite selectors", function () {
+      store.addProperties("b", {
+        ".a, .a.b, .a.b.c": {
+          x: 2,
+        },
       });
-      return expect(store.propertiesForSource('b')).toEqual({
-        '.a': {
-          x: 2
+      return expect(store.propertiesForSource("b")).toEqual({
+        ".a": {
+          x: 2,
         },
-        '.a.b': {
-          x: 2
+        ".a.b": {
+          x: 2,
         },
-        '.a.b.c': {
-          x: 2
-        }
+        ".a.b.c": {
+          x: 2,
+        },
       });
     });
   });
-  describe("::propertiesForSourceAndSelector(source, selector)", function() {
-    it('returns all the properties for a given source', function() {
+  describe("::propertiesForSourceAndSelector(source, selector)", function () {
+    it("returns all the properties for a given source", function () {
       var properties;
-      store.addProperties('a', {
-        '.a.b': {
-          'x': 1
-        }
+      store.addProperties("a", {
+        ".a.b": {
+          x: 1,
+        },
       });
-      store.addProperties('b', {
-        '.a': {
-          'x': 2
-        }
+      store.addProperties("b", {
+        ".a": {
+          x: 2,
+        },
       });
-      store.addProperties('b', {
-        '.a.b': {
-          'y': 1
-        }
+      store.addProperties("b", {
+        ".a.b": {
+          y: 1,
+        },
       });
-      properties = store.propertiesForSourceAndSelector('b', '.b.a');
+      properties = store.propertiesForSourceAndSelector("b", ".b.a");
       return expect(properties).toEqual({
-        y: 1
+        y: 1,
       });
     });
-    return it('can compose properties added at different times for matching keys', function() {
-      store.addProperties('b', {
-        '.a': {
-          'x': 2
-        }
+    return it("can compose properties added at different times for matching keys", function () {
+      store.addProperties("b", {
+        ".a": {
+          x: 2,
+        },
       });
-      store.addProperties('b', {
-        '.o.k': {
-          'y': 1
-        }
+      store.addProperties("b", {
+        ".o.k": {
+          y: 1,
+        },
       });
-      store.addProperties('b', {
-        '.o.k': {
-          'z': 3,
-          'y': 5
-        }
+      store.addProperties("b", {
+        ".o.k": {
+          z: 3,
+          y: 5,
+        },
       });
-      store.addProperties('b', {
-        '.a.b': {
-          'y': 10
-        }
+      store.addProperties("b", {
+        ".a.b": {
+          y: 10,
+        },
       });
-      return expect(store.propertiesForSourceAndSelector('b', '.o.k')).toEqual({
+      return expect(store.propertiesForSourceAndSelector("b", ".o.k")).toEqual({
         y: 5,
-        z: 3
+        z: 3,
       });
     });
   });
-  return describe("::propertiesForSourceAndSelector(source, selector)", function() {
-    it('returns all the properties for a given source', function() {
+  return describe("::propertiesForSourceAndSelector(source, selector)", function () {
+    it("returns all the properties for a given source", function () {
       var properties;
-      store.addProperties('a', {
-        '.a.b': {
-          'x': 1
-        }
+      store.addProperties("a", {
+        ".a.b": {
+          x: 1,
+        },
       });
-      store.addProperties('b', {
-        '.a': {
-          'x': 2
-        }
+      store.addProperties("b", {
+        ".a": {
+          x: 2,
+        },
       });
-      store.addProperties('b', {
-        '.a.b': {
-          'y': 1
-        }
+      store.addProperties("b", {
+        ".a.b": {
+          y: 1,
+        },
       });
-      properties = store.propertiesForSelector('.b.a');
+      properties = store.propertiesForSelector(".b.a");
       return expect(properties).toEqual({
         x: 1,
-        y: 1
+        y: 1,
       });
     });
-    return it('can compose properties added at different times for matching keys', function() {
-      store.addProperties('b', {
-        '.a': {
-          'x': 2
-        }
+    return it("can compose properties added at different times for matching keys", function () {
+      store.addProperties("b", {
+        ".a": {
+          x: 2,
+        },
       });
-      store.addProperties('b', {
-        '.o.k': {
-          'y': 1
-        }
+      store.addProperties("b", {
+        ".o.k": {
+          y: 1,
+        },
       });
-      store.addProperties('a', {
-        '.o.k': {
-          'z': 3,
-          'y': 5
-        }
+      store.addProperties("a", {
+        ".o.k": {
+          z: 3,
+          y: 5,
+        },
       });
-      store.addProperties('b', {
-        '.a.b': {
-          'y': 10
-        }
+      store.addProperties("b", {
+        ".a.b": {
+          y: 10,
+        },
       });
-      return expect(store.propertiesForSelector('.o.k')).toEqual({
+      return expect(store.propertiesForSelector(".o.k")).toEqual({
         y: 5,
-        z: 3
+        z: 3,
       });
     });
   });
