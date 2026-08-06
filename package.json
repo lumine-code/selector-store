@@ -22,11 +22,11 @@
     "access": "public"
   },
   "dependencies": {
-    "atom-slick": "^2",
+    "@lumine-code/underscore-plus": "github:lumine-code/underscore-plus#91bdb6152d7b3f86f198917707e258af5470db9f",
+    "atom-slick": "^2.0.0",
     "event-kit": "^2.5.3",
     "grim": "^2.0.3",
-    "key-path-helpers": "^0.4.0",
-    "@lumine-code/underscore-plus": "github:lumine-code/underscore-plus#91bdb6152d7b3f86f198917707e258af5470db9f"
+    "key-path-helpers": "^0.4.0"
   },
   "devDependencies": {
     "jasmine": "^6.3.0"
