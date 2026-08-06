@@ -22,11 +22,9 @@
     "access": "public"
   },
   "dependencies": {
-    "@lumine-code/underscore-plus": "github:lumine-code/underscore-plus#3187fd4c2dd47f50044efe51deb7c662ddac437c",
-    "atom-slick": "^2.0.0",
-    "event-kit": "^2.5.3",
-    "grim": "^2.0.3",
-    "key-path-helpers": "^0.4.0"
+    "@lumine-code/event-kit": "github:lumine-code/event-kit#fcd72380dff55925c2224251bc3dc81f35665437",
+    "@lumine-code/selector-kit": "github:lumine-code/selector-kit#f27c31ac00885f5fb530233ec006879a1e0dea5c",
+    "@lumine-code/underscore-plus": "github:lumine-code/underscore-plus#3187fd4c2dd47f50044efe51deb7c662ddac437c"
   },
   "devDependencies": {
     "jasmine": "^6.3.0"
