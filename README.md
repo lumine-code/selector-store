@@ -16,8 +16,7 @@ npm install @lumine-code/selector-store
 
 ## Usage
 
-Currently, this library only supports the combinations of the following
-elements. More could be added pretty easily.
+Currently, this library only supports the combinations of the following elements. More could be added pretty easily.
 
 - Element names: `div`
 - Class names: `.foo`
