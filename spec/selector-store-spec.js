@@ -726,7 +726,7 @@ describe("SelectorStore", function () {
       });
     });
   });
-  return describe("::propertiesForSourceAndSelector(source, selector)", function () {
+  return describe("::propertiesForSelector(selector)", function () {
     it("returns all the properties for a given source", function () {
       var properties;
       store.addProperties("a", {
