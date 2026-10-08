@@ -2,6 +2,8 @@
 
 Stores and retrieves properties associated with CSS selectors.
 
+Fork of [pulsar-edit/scoped-property-store](https://github.com/pulsar-edit/scoped-property-store).
+
 ## Features
 
 - **Selector matching**: associates values with element, class, attribute, descendant, and child selectors.
