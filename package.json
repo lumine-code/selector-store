@@ -24,7 +24,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@lumine-code/event-kit": "github:lumine-code/event-kit#5ee6ba2081d4002539bf0febfb9c2f064d3e70e5",
+    "@lumine-code/event-kit": "github:lumine-code/event-kit#4fe44a952d4b73ed7061388a940480e01810f570",
     "@lumine-code/selector-kit": "github:lumine-code/selector-kit#372b3b8d0f78e361da4166ce156f7caf1c667418",
     "@lumine-code/underscore-plus": "github:lumine-code/underscore-plus#857ec7ff4447161e51419ff7c36a06e7fc1084ae"
   },
