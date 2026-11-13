@@ -35,7 +35,7 @@
     "eslint-plugin-n": "^18.5.0",
     "globals": "^17.14.0",
     "jasmine": "^7.0.0",
-    "prettier": "^3.10.0"
+    "prettier": "^3.10.1"
   },
   "homepage": "https://github.com/lumine-code/selector-store/",
   "overrides": {
