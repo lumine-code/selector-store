@@ -24,9 +24,9 @@
     "access": "public"
   },
   "dependencies": {
-    "@lumine-code/event-kit": "github:lumine-code/event-kit#ac5c5fbb8790c1cdafbf3e20d9e6c4e1bdc63fa9",
-    "@lumine-code/selector-kit": "github:lumine-code/selector-kit#99a74f02e838dff439a7024a297130c7e9d825c4",
-    "@lumine-code/underscore-plus": "github:lumine-code/underscore-plus#b00be14b64a7ea2c93cb54429d6f01c03977ae2b"
+    "@lumine-code/event-kit": "github:lumine-code/event-kit#ae152601c33efce82f63ebe530e9f8a93d62161e",
+    "@lumine-code/selector-kit": "github:lumine-code/selector-kit#0a6e35aca6d11463430a00902696c23c338125a6",
+    "@lumine-code/underscore-plus": "github:lumine-code/underscore-plus#b43aecd8dcd6db42b8a0cd4839b10e66ba9e452a"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
